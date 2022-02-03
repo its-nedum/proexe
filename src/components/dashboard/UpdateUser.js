@@ -1,26 +1,53 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Row, Col, Form, Input, Card, Button } from 'antd';
 import { SendOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import {NameRules, EmailRules} from './formRules'
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { ToastContainer, toast } from "react-toastify";
+import { updateUser } from '../../redux/reducer/user';
+
+const successMsg = (message) => toast.success(message);
 
 const UpdateUser = () => {
     const navigate = useNavigate()
-    const [form] = Form.useForm();
+    const dispatch = useDispatch();
 
+    // fetch user list data from redux users store
+    const user = useSelector((state) => state.users.user);
+
+    // redirect back to dashboard if there is nothing to edit in the event that the user refreshed the edit page
+    useEffect(() => {
+        if(Object.keys(user).length === 0){
+            navigate('/')
+        }
+    },[user, navigate])
+
+    // handles user update
     const onFinish = (values) => {
-
+        values.id = user.id
+        // dispatch the update user action
+        dispatch(updateUser(values))
+        // display success message
+        successMsg('User updated successfully')
+        // set 2 seconds delay then redirect to dashboard
+        setTimeout(() => {
+            navigate('/')
+        }, 2000)
     }
 
     return (
         <div className="container">
+            <ToastContainer />
             <Card title="Edit User" className="edit_form">
                 <Form
                 name="edit_user"
-                form={form}
                 labelCol={{span: 8}}
                 wrapperCol={{span: 16}}
-                initialValues={{}}
+                initialValues={{
+                    name: user.name,
+                    email: user.email,
+                }}
                 onFinish={onFinish}
                 >
                     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>

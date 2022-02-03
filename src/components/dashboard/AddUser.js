@@ -3,21 +3,36 @@ import { Row, Col, Form, Input, Card, Button } from 'antd';
 import { SendOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import {NameRules, EmailRules} from './formRules'
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../../redux/reducer/user';
+import { randomNumberGenerator } from '../helpers/utils';
+import { ToastContainer, toast } from "react-toastify";
+
+const successMsg = (message) => toast.success(message);
 
 const AddUser = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate()
-    const [form] = Form.useForm();
 
     const onFinish = (values) => {
-
+        // generate a random id for this user
+        values.id = randomNumberGenerator()
+        // dispatch the addUser action
+        dispatch(addUser(values))
+        // display success message
+        successMsg('A new user added successfully')
+        // set 2 seconds delay then redirect to dashboard
+        setTimeout(() => {
+            navigate('/')
+        }, 2000)
     }
 
     return (
         <div className="container">
+            <ToastContainer />
             <Card title="Add User" className="add_form">
                 <Form
                 name="add_user"
-                form={form}
                 labelCol={{span: 8}}
                 wrapperCol={{span: 16}}
                 initialValues={{}}

@@ -3,20 +3,34 @@ import { Row, Col, Button, Card, Typography, Table, Space, Tooltip } from 'antd'
 import { EditOutlined, DeleteOutlined, UserAddOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from './DeleteModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser, deleteUser } from '../../redux/reducer/user';
+import { ToastContainer, toast } from "react-toastify";
+
+const successMsg = (message) => toast.success(message);
 
 const Index = () => {
-    const navigate = useNavigate()
-    const [visible, setVisible] = useState(false)
-    const [toDelete, setToDelete] = useState(null)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [visible, setVisible] = useState(false);
+    const [userId, setUserId] = useState(null);
+
+    // fetch user list data from redux users store
+    const users = useSelector((state) => state.users.users);
 
     const handleUserDelete = () => {
-        console.log(toDelete)
-        setVisible(false)
+        // dispatch the delete user action
+        dispatch(deleteUser({id:userId}))
+        // hide the delete pop up
+        onCancel()
+        // display success message
+        successMsg('User deleted successfully')
     }
 
+    // hide the delete pop up
     const onCancel = () => setVisible(false)
     
-
+    // User table header or column
     const columns = [
         {
           title: 'Id',
@@ -52,15 +66,20 @@ const Index = () => {
                     <Tooltip title="Edit user">
                         <EditOutlined 
                             className="edit_icon" 
-                            onClick={() => navigate(`/user/${record.id}`)}
+                            onClick={() => {
+                                dispatch(getUser(record))
+                                navigate(`/user/${record.id}`)
+                            }
+                        }
                         />
                     </Tooltip>
                     <Tooltip title="Delete user">
                         <DeleteOutlined 
                             className="delete_icon"
                             onClick={() => { 
-                                setToDelete(record.id); 
-                                setVisible(true)}
+                                setUserId(record.id); 
+                                setVisible(true)
+                                }
                             }
                             />
                     </Tooltip>
@@ -69,51 +88,19 @@ const Index = () => {
         },
     ]
 
-    const users = [
-        {
-          key: 1,
-          id: 1,
-          name: 'Mike Doe',
-          username: 'mike_man',
-          city: '10 Downing Street',
-          email: 'markdoe@gmail.com'
-        },
-        {
-            key: 2,
-            id: 2,
-            name: 'Mike Doe',
-            username: 'mike_man',
-            city: '10 Downing Street',
-            email: 'markdoe@gmail.com'
-          },
-          {
-            key: 3,
-            id: 3,
-            name: 'Mike Doe',
-            username: 'mike_man',
-            city: '10 Downing Street',
-            email: 'markdoe@gmail.com'
-          },
-          {
-              key: 4,
-              id: 4,
-              name: 'Mike Doe',
-              username: 'mike_man',
-              city: '10 Downing Street',
-              email: 'markdoe@gmail.com'
-            },
-            {
-                key: 5,
-                id: 5,
-                name: 'Mike Doe',
-                username: 'mike_man',
-                city: '10 Downing Street',
-                email: 'markdoe@gmail.com'
-              },
-      ];
+    // map through the user data and pass the result as data source to the table
+    const results = users.map((user) => ({
+        key: user.id,
+        id: user.id,
+        name: user.name,
+        username: user?.username,
+        email: user.email,
+        city: user?.address?.city,
+      }));
 
     return (
         <div className="container">
+            <ToastContainer />
             <Typography.Title level={3}>Dashboard</Typography.Title>
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 <Card title="User List">
@@ -125,7 +112,7 @@ const Index = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <Table columns={columns} dataSource={users} pagination={false} scroll={{ y: 480 }} />
+                        <Table columns={columns} dataSource={results} pagination={false} scroll={{ y: 480 }} />
                     </Row>
                 </Card>
             </Row>
