@@ -18,7 +18,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { Loader } from '../helpers/Loader';
 
-const Index = () => {
+const Home = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
@@ -142,7 +142,6 @@ const Index = () => {
         username: user?.username,
         email: user.email,
         city: user?.address?.city,
-        address: user.address,
       }));
 
     return (
@@ -172,4 +171,4 @@ const Index = () => {
     )
 }
 
-export default Index
+export default Home
