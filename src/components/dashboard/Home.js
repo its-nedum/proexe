@@ -32,8 +32,11 @@ const Index = () => {
     const users = useSelector((state) => state.users.users);
 
     useEffect(() => {
-        // Only fetch user data from API if theres no users in the redux store
-        if(users.length === 0){
+        /* Only fetch user data from API when
+        * 1. the page loads for the first time
+        * 2. the page is refreshed
+        */
+        if(users.length === 0 && !userId){
             setLoading(true)
             fetch("https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data")
             .then((response) => response.json())
@@ -43,7 +46,7 @@ const Index = () => {
                 dispatch(getAPIUsers(res))
             });
         }
-    }, [users, dispatch])
+    }, [users, dispatch, userId])
 
     // show loading screen while fetching users list
     if(loading) {

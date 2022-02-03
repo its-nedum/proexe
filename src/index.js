@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-// import 'antd/dist/antd.css'; // ant design CSS files
 import "react-toastify/dist/ReactToastify.css"; // react toastify css
 import { store } from '../src/redux/store'
 import { Provider } from 'react-redux'

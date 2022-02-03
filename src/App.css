@@ -76,3 +76,9 @@ body {
 .user_wrap {
   margin-bottom: 30px;
 }
+
+.del_btn {
+  color: #fff !important;
+  background: red !important;
+  border: none;
+}
