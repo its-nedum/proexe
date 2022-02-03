@@ -8,11 +8,12 @@ import { addUser } from '../../redux/reducer/user';
 import { randomNumberGenerator } from '../helpers/utils';
 import { ToastContainer, toast } from "react-toastify";
 
-const successMsg = (message) => toast.success(message);
-
 const AddUser = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    
+    const successMsg = (message) => toast.success(message);
+
 
     const onFinish = (values) => {
         // generate a random id for this user

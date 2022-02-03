@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Card, Typography, Table, Space, Tooltip } from 'antd';
-import { EditOutlined, DeleteOutlined, UserAddOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
+import { 
+    EditOutlined, 
+    DeleteOutlined, 
+    UserAddOutlined, 
+    SortAscendingOutlined, 
+    SortDescendingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from './DeleteModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser, deleteUser, ascendingSort, descendingSort } from '../../redux/reducer/user';
+import { 
+    getUser, 
+    deleteUser, 
+    ascendingSort, 
+    descendingSort, 
+    getAPIUsers } from '../../redux/reducer/user';
 import { ToastContainer, toast } from "react-toastify";
-
-const successMsg = (message) => toast.success(message);
+import { Loader } from '../helpers/Loader';
 
 const Index = () => {
     const navigate = useNavigate();
@@ -15,9 +24,33 @@ const Index = () => {
     const [visible, setVisible] = useState(false);
     const [userId, setUserId] = useState(null);
     const [sortOrder, setSortOrder] = useState(false) 
+    const [loading, setLoading] = useState(false)
+
+    const successMsg = (message) => toast.success(message);
 
     // fetch user list data from redux users store
     const users = useSelector((state) => state.users.users);
+
+    useEffect(() => {
+        // Only fetch user data from API if theres no users in the redux store
+        if(users.length === 0){
+            setLoading(true)
+            fetch("https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data")
+            .then((response) => response.json())
+            .then((res) => {
+                setLoading(false)
+                // dispatch the getAPIUsers action with user list as payload
+                dispatch(getAPIUsers(res))
+            });
+        }
+    }, [users, dispatch])
+
+    // show loading screen while fetching users list
+    if(loading) {
+        return(
+            <Loader />
+        )
+    }
 
     const handleSort = () => {
         setSortOrder(!sortOrder)
@@ -114,7 +147,7 @@ const Index = () => {
             <ToastContainer />
             <Typography.Title level={2} className="title">Dashboard</Typography.Title>
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Card title={<Typography.Title level={5}>User List</Typography.Title>}>
+                <Card className="user_wrap" title={<Typography.Title level={5}>User List</Typography.Title>}>
                     <Row>
                         <Col span={24}>
                             <div className="btn_wrap">

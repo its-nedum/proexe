@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { UserList } from '../userList';
 
 const initialState = {
-  users: UserList,
+  users: [],
   user: {},
 }
 
@@ -10,6 +9,10 @@ export const userSlice = createSlice({
     name: 'users',
     initialState,
     reducers: {
+      getAPIUsers: (state, action) => {
+          // fetch and save users from API
+          state.users = action.payload;
+      },
       getUser: (state, action) => {
           // set a single user to be displayed on the user edit page
           state.user = action.payload;
@@ -29,39 +32,24 @@ export const userSlice = createSlice({
           state.users = state.users.filter(user => user.id !== action.payload.id);
       },
       ascendingSort: (state, action) => {
-        state.users = state.users.sort((a, b) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()))
+        // sort the users in ascending order by comparing their username
+        state.users = state.users.sort((a, b) => a.username.toLocaleLowerCase().localeCompare(b.username.toLocaleLowerCase()))
       },
       descendingSort: (state, action) => {
-        state.users = state.users.sort((a, b) => b.name.toLocaleLowerCase().localeCompare(a.name.toLocaleLowerCase()))
+        // sort the users in descending order by comparing their username
+        state.users = state.users.sort((a, b) => b.username.toLocaleLowerCase().localeCompare(a.username.toLocaleLowerCase()))
       }
     },
   })
 
-export const { getUser, addUser, updateUser, deleteUser, ascendingSort, descendingSort } = userSlice.actions;
+export const { 
+  getAPIUsers,
+  getUser, 
+  addUser, 
+  updateUser, 
+  deleteUser, 
+  ascendingSort, 
+  descendingSort,  
+} = userSlice.actions;
 
 export default userSlice.reducer;
-
-/*
-const sortedUsers = currentUsers.sort((a, b) => {
-          const result = a.firstName.localeCompare(b.firstName);
-
-          return result !== 0 ? result : a.lastName.localeCompare(b.lastName);
-        }) 
-
-
-
-names.sort((a,b) => {
-  var nameA = a.firstName.toUpperCase(); // ignore upper and lowercase
-  var nameB = b.firstName.toUpperCase(); // ignore upper and lowercase
-  if (nameA < nameB) {
-    return -1;
-  }
-  if (nameA > nameB) {
-    return 1;
-  }
-
-  // names must be equal
-  return 0;
-});
-
-*/

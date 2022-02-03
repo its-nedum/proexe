@@ -7,11 +7,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from "react-toastify";
 import { updateUser } from '../../redux/reducer/user';
 
-const successMsg = (message) => toast.success(message);
-
 const UpdateUser = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
+    
+    const successMsg = (message) => toast.success(message);
 
     // fetch user list data from redux users store
     const user = useSelector((state) => state.users.user);

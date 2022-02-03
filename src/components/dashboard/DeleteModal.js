@@ -5,7 +5,7 @@ const DeleteModal = ({ visible, onCancel, onDelete}) => {
     return (
         <Modal
         visible={visible}
-        title="Delete User"
+        title={<Typography.Title level={5}>Delete User</Typography.Title>}
         okText="Delete"
         cancelText="Cancel"
         onCancel={onCancel}
