@@ -28,9 +28,40 @@ export const userSlice = createSlice({
           // filter out the user to be deleted from the users array
           state.users = state.users.filter(user => user.id !== action.payload.id);
       },
+      ascendingSort: (state, action) => {
+        state.users = state.users.sort((a, b) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()))
+      },
+      descendingSort: (state, action) => {
+        state.users = state.users.sort((a, b) => b.name.toLocaleLowerCase().localeCompare(a.name.toLocaleLowerCase()))
+      }
     },
   })
 
-export const { getUser, addUser, updateUser, deleteUser } = userSlice.actions;
+export const { getUser, addUser, updateUser, deleteUser, ascendingSort, descendingSort } = userSlice.actions;
 
 export default userSlice.reducer;
+
+/*
+const sortedUsers = currentUsers.sort((a, b) => {
+          const result = a.firstName.localeCompare(b.firstName);
+
+          return result !== 0 ? result : a.lastName.localeCompare(b.lastName);
+        }) 
+
+
+
+names.sort((a,b) => {
+  var nameA = a.firstName.toUpperCase(); // ignore upper and lowercase
+  var nameB = b.firstName.toUpperCase(); // ignore upper and lowercase
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+
+  // names must be equal
+  return 0;
+});
+
+*/

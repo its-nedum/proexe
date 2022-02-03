@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Row, Col, Form, Input, Card, Button } from 'antd';
+import { Row, Col, Form, Input, Card, Button, Typography } from 'antd';
 import { SendOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import {NameRules, EmailRules} from './formRules'
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +25,8 @@ const UpdateUser = () => {
 
     // handles user update
     const onFinish = (values) => {
-        values.id = user.id
+        values.id = user.id;
+        values.username = user?.username;
         // dispatch the update user action
         dispatch(updateUser(values))
         // display success message
@@ -39,7 +40,7 @@ const UpdateUser = () => {
     return (
         <div className="container">
             <ToastContainer />
-            <Card title="Edit User" className="edit_form">
+            <Card title={<Typography.Title level={5}>Edit User</Typography.Title>} className="edit_form">
                 <Form
                 name="edit_user"
                 labelCol={{span: 8}}

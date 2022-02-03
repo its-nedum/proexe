@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Card, Typography, Table, Space, Tooltip } from 'antd';
-import { EditOutlined, DeleteOutlined, UserAddOutlined, SortAscendingOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, UserAddOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from './DeleteModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser, deleteUser } from '../../redux/reducer/user';
+import { getUser, deleteUser, ascendingSort, descendingSort } from '../../redux/reducer/user';
 import { ToastContainer, toast } from "react-toastify";
 
 const successMsg = (message) => toast.success(message);
@@ -14,9 +14,19 @@ const Index = () => {
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
     const [userId, setUserId] = useState(null);
+    const [sortOrder, setSortOrder] = useState(false) 
 
     // fetch user list data from redux users store
     const users = useSelector((state) => state.users.users);
+
+    const handleSort = () => {
+        setSortOrder(!sortOrder)
+        if(sortOrder){
+            dispatch(descendingSort())
+        }else{
+            dispatch(ascendingSort())
+        }  
+    }
 
     const handleUserDelete = () => {
         // dispatch the delete user action
@@ -96,19 +106,20 @@ const Index = () => {
         username: user?.username,
         email: user.email,
         city: user?.address?.city,
+        address: user.address,
       }));
 
     return (
         <div className="container">
             <ToastContainer />
-            <Typography.Title level={3}>Dashboard</Typography.Title>
+            <Typography.Title level={2} className="title">Dashboard</Typography.Title>
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Card title="User List">
+                <Card title={<Typography.Title level={5}>User List</Typography.Title>}>
                     <Row>
                         <Col span={24}>
                             <div className="btn_wrap">
                             <Button type="primary" size="middle" className="add_btn" onClick={() => navigate('/user/add')}><UserAddOutlined /> Add User</Button>
-                            <Button size="middle" danger className="sort_btn"><SortAscendingOutlined /> Sort User</Button></div>
+                            <Button size="middle" danger className="sort_btn" onClick={handleSort}>{sortOrder ?<SortDescendingOutlined/>:<SortAscendingOutlined />} Sort User</Button></div>
                         </Col>
                     </Row>
                     <Row>

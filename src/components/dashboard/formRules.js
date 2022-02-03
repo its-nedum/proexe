@@ -1,7 +1,7 @@
 export const NameRules = [
     {
       required: true,
-      message: 'Please input your name',
+      message: 'Please input a name',
     },
     {
         min: 2,
@@ -16,7 +16,7 @@ export const NameRules = [
 export const EmailRules = [
 {
     required: true,
-    message: 'Please input your email',
+    message: 'Please input an email',
   },
   {
       type: 'email',

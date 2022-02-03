@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Form, Input, Card, Button } from 'antd';
+import { Row, Col, Form, Input, Card, Button, Typography } from 'antd';
 import { SendOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import {NameRules, EmailRules} from './formRules'
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ const AddUser = () => {
     return (
         <div className="container">
             <ToastContainer />
-            <Card title="Add User" className="add_form">
+            <Card title={<Typography.Title level={5}>Add User</Typography.Title>} className="add_form">
                 <Form
                 name="add_user"
                 labelCol={{span: 8}}
