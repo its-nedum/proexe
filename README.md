@@ -5,11 +5,11 @@ Proexe Frontend Task
 React, Redux, Redux Toolkit, Ant Design
 
 ## Functionalities
-1. Fetch users list [API](https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data)
+1. Fetch users list from [API](https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data)
 2. Add new user
 3. Edit user
 4. Delete user
-5. Sort user by `username` in both `ascending` and `descending` order
+5. Sort users by `username` in both `ascending` and `descending` order
 
 ## Getting Started
 Clone respository:
