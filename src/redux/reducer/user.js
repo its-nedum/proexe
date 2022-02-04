@@ -22,10 +22,11 @@ export const userSlice = createSlice({
           state.users.push(action.payload);
       },
       updateUser: (state, action) => {
-          // find the position of the user in the users array
-          const position = state.users.findIndex((obj) => obj.id === action.payload.id);
-          // replace the user with updated data
-          state.users[position] = action.payload
+          // find the user object from the users array
+          const userObj = state.users.find((obj) => obj.id === action.payload.id);
+          // update the user details
+          userObj.email = action.payload.email;
+          userObj.name = action.payload.name
       },
       deleteUser: (state, action) => {
           // filter out the user to be deleted from the users array
@@ -33,11 +34,11 @@ export const userSlice = createSlice({
       },
       ascendingSort: (state, action) => {
         // sort the users in ascending order by comparing their username
-        state.users = state.users.sort((a, b) => a.username.toLocaleLowerCase().localeCompare(b.username.toLocaleLowerCase()))
+        state.users = state.users.sort((a, b) => a?.username?.toLocaleLowerCase().localeCompare(b?.username?.toLocaleLowerCase()));
       },
       descendingSort: (state, action) => {
         // sort the users in descending order by comparing their username
-        state.users = state.users.sort((a, b) => b.username.toLocaleLowerCase().localeCompare(a.username.toLocaleLowerCase()))
+        state.users = state.users.sort((a, b) => b?.username?.toLocaleLowerCase().localeCompare(a?.username?.toLocaleLowerCase()));
       }
     },
   })

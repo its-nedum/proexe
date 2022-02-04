@@ -26,7 +26,6 @@ const UpdateUser = () => {
     // handles user update
     const onFinish = (values) => {
         values.id = user.id;
-        values.username = user?.username;
         // dispatch the update user action
         dispatch(updateUser(values))
         // display success message
